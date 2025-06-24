@@ -69,7 +69,9 @@ pub struct DuplexSponge<C: Permutation> {
 
 impl<U: Unit, C: Permutation<U = U>> DuplexSpongeInterface<U> for DuplexSponge<C> {
     fn new(iv: [u8; 32]) -> Self {
-        assert!(C::N > C::R, "Capacity of the sponge should be > 0.");
+        assert!(C::R > 0, "The rate segment must be non-trivial");
+        assert!(C::N > C::R, "The capacity segment must be non-trivial");
+
         Self {
             permutation: C::new(iv),
             absorb_pos: 0,
